@@ -25,7 +25,7 @@ def destroy():
 def forward(): 
 	webiopi.debug("circle")
 #	GPIO.digitalWrite(Green, GPIO.HIGH)
-	subprocess.call(["python", "/home/pi/Desktop/safety/Tanaka/special/circle.py"])
+	subprocess.call(["python", "/home/pi/Desktop/SafetyMachine/circle.py"])
 	webiopi.debug("circle_stop")
 #	GPIO.digitalWrite(Green, GPIO.LOW)
 	
@@ -33,6 +33,6 @@ def forward():
 def stop(): 
 	webiopi.debug("checkCode")
 #	GPIO.digitalWrite(Green, GPIO.HIGH)
-	subprocess.call(["python", "/home/pi/Desktop/safety/Tanaka/special/checkCode.py"])
+	subprocess.call(["python", "/home/pi/Desktop/SafetyMachine/checkCode.py"])
 	webiopi.debug("checkCode_stop")
 #	GPIO.digitalWrite(Green, GPIO.LOW)
