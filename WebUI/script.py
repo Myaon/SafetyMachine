@@ -15,6 +15,13 @@ def setup():
 #	GPIO.digitalWrite(Blue, GPIO.HIGH)
 #	GPIO.digitalWrite(Green, GPIO.LOW)
 
+# 繰り返し呼ばれる関数
+def loop():
+	# led.setRGB()
+	# save_data.toCSV()
+	# save_data.toSpredSheet()
+	webiopi.sleep(10)
+
 # WebIOPi終了時に呼ばれる関数
 def destroy(): 
 	webiopi.debug("Script with macros - Destroy") 
