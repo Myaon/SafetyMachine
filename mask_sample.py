@@ -4,6 +4,8 @@ import picamera.array
 import cv2
 import numpy as np
 
+import led
+
 x1=0
 x2=0
 
@@ -37,14 +39,14 @@ with picamera.PiCamera() as camera:
             
             #cv2.imshow("frame",stream.array)
             #cv2.imshow("mask",mask)
-            cv2.imshow("res1",res1)
-            cv2.imshow("res2",res2)
+            
             
             if cv2.waitKey(1) & 0xFF == ord('q'):
                 #cv2.imwrite("stream.png", stream.array)
                 #cv2.imwrite("mask.png", mask)
-                cv2.imwrite("res1.png", res1)
-                cv2.imwrite("res2.png", res2)
+                #cv2.imwrite("res1.png", res1)
+                #cv2.imwrite("res2.png", res2)
+                GPIO.cleanup()
                 break
                 
             # １色目の処理
@@ -52,15 +54,20 @@ with picamera.PiCamera() as camera:
             contours1,hierarchy1=cv2.findContours(thresh1,1,2)
             
             if(contours1):
-                cnt1=contours1[0]
                 """
+                cnt1=contours1[0]
+                
                 rect = cv2.minAreaRect(cnt)
                 box = cv2.boxPoints(rect)
                 box = np.int0(box)
                 im = cv2.drawContours(im,[box],0,(0,0,255),2)
-                """
+                
                 x1,y1,w1,h1=cv2.boundingRect(cnt1)
-                mask1=cv2.rectangle(mask1,(x1,y1),(x1+w1,y1+h1),(0,255,0),2)
+                cv2.rectangle(mask1,(x1,y1),(x1+w1,y1+h1),(0,255,0),2)
+                #print(x1)
+                """
+                max_cnt1=max(contours1,key=lambda x:cv2.contourArea(x))
+                x1,y1,w1,h1=cv2.boundingRect(max_cnt1)
                 print(x1)
                 
             # ２色目の処理
@@ -68,19 +75,33 @@ with picamera.PiCamera() as camera:
             contours2,hierarchy2=cv2.findContours(thresh2,1,2)
             
             if(contours2):
-                cnt2=contours2[0]
                 """
+                cnt2=contours2[0]
+                
                 rect = cv2.minAreaRect(cnt)
                 box = cv2.boxPoints(rect)
                 box = np.int0(box)
                 im = cv2.drawContours(im,[box],0,(0,0,255),2)
-                """
-                x2,y2,w2,h2=cv2.boundingRect(cnt2)
-                mask2=cv2.rectangle(mask2,(x2,y2),(x2+w2,y2+h2),(0,255,0),2)
-                print(x2)
                 
+                x2,y2,w2,h2=cv2.boundingRect(cnt2)
+                cv2.rectangle(mask2,(x2,y2),(x2+w2,y2+h2),(0,255,0),2)
+                #print(x2)
+                """
+                max_cnt2=max(contours2,key=lambda x:cv2.contourArea(x))
+                x2,y2,w2,h2=cv2.boundingRect(max_cnt2)
+                print(x2)
+                print(" ")
+                
+            cv2.imshow("res1",mask1)
+            cv2.imshow("res2",mask2)
+                
+            # 表裏判定：裏のとき
             if(x1 > x2):
-                print("うら")
+                #print("うら")
+                led.setRGB(1,0,0)
+                
+            if(x1 <= x2):
+                led.setRGB(0,1,0)
             
             stream.seek(0)
             stream.truncate()
