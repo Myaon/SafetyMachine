@@ -54,12 +54,18 @@ with picamera.PiCamera() as camera:
             contours1,hierarchy1=cv2.findContours(thresh1,1,2)
             
             if(contours1):
+                list1=[]
                 for i in range(0,len(contours1)):
+                    # 面積リスト化
+                    list1.append(cv2.contourArea(contours1[i]))
+                    
+                    # 一定面積以下の輪郭を除去
                     if cv2.contourArea(contours1[i])<20:
                         cv2.polylines(mask1,contours1[i],True,0,5)
                         
                 max_cnt1=max(contours1,key=lambda x:cv2.contourArea(x))
                 x1,y1,w1,h1=cv2.boundingRect(max_cnt1)
+                print(list1)
                 
             # ２色目の処理
             ret2,thresh2=cv2.threshold(mask2,127,255,0)
@@ -67,6 +73,7 @@ with picamera.PiCamera() as camera:
             
             if(contours2):
                 for i in range(0,len(contours2)):
+                    # 一定面積以下の輪郭を除去
                     if cv2.contourArea(contours2[i])<20:
                         cv2.polylines(mask2,contours2[i],True,0,5)
                         
