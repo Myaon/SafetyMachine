@@ -4,6 +4,12 @@ import picamera.array
 import cv2
 import numpy as np
 
+import csv
+def toCSV(state):
+	with open('fusen.csv', 'a') as f:
+		writer = csv.writer(f)
+		writer.writerow(state)
+
 import urllib2
 
 def internet_on():
@@ -34,6 +40,12 @@ with picamera.PiCamera() as camera:
         while True:
             # stream.arrayにBGRの順で映像データを格納
             camera.capture(stream, 'bgr', use_video_port=True)
+            print(stream.array[240,320])
+            
+            # 映像データをHSV形式に変換
+            hsv = cv2.cvtColor(stream.array, cv2.COLOR_BGR2HSV)
+            print(hsv[240,320])
+            print("\n")
             
             # 物理スイッチを押して停止
             if GPIO.input(22) == GPIO.HIGH:
@@ -41,14 +53,16 @@ with picamera.PiCamera() as camera:
                 
             # キーボード入力で"q"を押して停止
             if cv2.waitKey(1) & 0xFF == ord('q'):
-                print(stream.array[265,270])
-                print(stream.array[265,370])
-                cv2.imwrite("resp.png", stream.array)
+                #print(stream.array[265,270])
+                #print(stream.array[265,370])
+                #toCSV(stream.array[240,320])
+                #cv2.imwrite("resc.png", stream.array)
                 GPIO.cleanup()
                 break
                 
-            cv2.circle(stream.array,(270,265),3,(0,0,0),thickness=-1)
-            cv2.circle(stream.array,(370,265),3,(0,0,0),thickness=-1)
+            cv2.circle(stream.array,(320,240),3,(0,0,0),thickness=-1)
+            #cv2.circle(stream.array,(270,265),3,(0,0,0),thickness=-1)
+            #cv2.circle(stream.array,(370,265),3,(0,0,0),thickness=-1)
             
             # system.arrayをウインドウに表示
             cv2.imshow('frame', stream.array)
