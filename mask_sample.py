@@ -7,12 +7,16 @@ import numpy as np
 import led
 import RPi.GPIO as GPIO
 
+import subprocess
+
 import time
 import csv
 def toCSV(state):
 	with open('time.csv', 'a') as f:
 		writer = csv.writer(f)
 		writer.writerow(state)
+
+time_count=0
 
 x1=0
 x2=0
@@ -104,6 +108,12 @@ with picamera.PiCamera() as camera:
             #print(s2-s1)#s2とs1の差分時間を表示。約10になる。
             s3 = s2-s1
             toCSV([s1,s2,s3])
+            
+            time_count=time_count+1
+            
+            if(time_count>=100):
+                subprocess.call(['python', '/home/pi/Desktop/SafetyMachine/save_data.py'])
+                time_count=0
             
             stream.seek(0)
             stream.truncate()

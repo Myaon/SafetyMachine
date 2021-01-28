@@ -21,7 +21,7 @@ def toSpreadSheet(state):
 bme = bme280_sample.readData()
 data=[str(datetime.now()), bme[0], bme[1], bme[2], str(GY_30_sample.getLux())]    
 data_str = ",".join(data)
-toCSV(data)
+#toCSV(data)
 toSpreadSheet(data_str)
 
-jtalk.toText("作業環境に注意して下さい")
+#jtalk.toText("作業環境に注意して下さい")
