@@ -5,6 +5,14 @@ import cv2
 import numpy as np
 
 import led
+import RPi.GPIO as GPIO
+
+import time
+import csv
+def toCSV(state):
+	with open('time.csv', 'a') as f:
+		writer = csv.writer(f)
+		writer.writerow(state)
 
 x1=0
 x2=0
@@ -19,6 +27,8 @@ with picamera.PiCamera() as camera:
         camera.awb_mode = 'fluorescent'
 
         while True:
+            s1=time.time()#現在の時刻を取得s1に代入
+            
             # stream.arrayにBGRの順で映像データを格納
             camera.capture(stream, 'bgr', use_video_port=True)
 
@@ -65,7 +75,7 @@ with picamera.PiCamera() as camera:
                         
                 max_cnt1=max(contours1,key=lambda x:cv2.contourArea(x))
                 x1,y1,w1,h1=cv2.boundingRect(max_cnt1)
-                print(list1)
+                #print(list1)
                 
             # ２色目の処理
             ret2,thresh2=cv2.threshold(mask2,127,255,0)
@@ -89,6 +99,11 @@ with picamera.PiCamera() as camera:
                 
             if(x1 <= x2):
                 led.setRGB(0,1,0)
+                
+            s2=time.time()#現在時刻を取得s2に代入
+            #print(s2-s1)#s2とs1の差分時間を表示。約10になる。
+            s3 = s2-s1
+            toCSV([s1,s2,s3])
             
             stream.seek(0)
             stream.truncate()
