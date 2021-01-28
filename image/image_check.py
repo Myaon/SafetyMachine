@@ -8,7 +8,7 @@ def toCSV(state):
 		writer = csv.writer(f)
 		writer.writerow(state)
 
-im = cv2.imread("resp.png")
+im = cv2.imread("back.png")
 hsv = cv2.cvtColor(im, cv2.COLOR_BGR2HSV)
 
 for x in range(hsv.shape[0]):
