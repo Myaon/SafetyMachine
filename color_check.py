@@ -56,7 +56,7 @@ with picamera.PiCamera() as camera:
                 #print(stream.array[265,270])
                 #print(stream.array[265,370])
                 #toCSV(stream.array[240,320])
-                cv2.imwrite("gakaku_mmax.png", stream.array)
+                cv2.imwrite("4color.png", stream.array)
                 GPIO.cleanup()
                 break
                 
