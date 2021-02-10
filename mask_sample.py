@@ -40,10 +40,17 @@ with picamera.PiCamera() as camera:
             hsv = cv2.cvtColor(stream.array, cv2.COLOR_BGR2HSV)
             
             # 取り出す色を指定
+            ''' 付箋（桃,青）
             lower1 = np.array([20,0,30])
             upper1 = np.array([30,140,200])
             lower2 = np.array([60,0,30])
             upper2 = np.array([70,150,200])
+            '''
+            # ビニールテープ（赤,青）
+            lower1 = np.array([4,0,0])
+            upper1 = np.array([10,255,255])
+            lower2 = np.array([90,0,0])
+            upper2 = np.array([110,255,255])
             
             #マスク処理
             mask1 = cv2.inRange(hsv, lower1, upper1)
@@ -51,7 +58,7 @@ with picamera.PiCamera() as camera:
             mask2 = cv2.inRange(hsv, lower2, upper2)
             res2 = cv2.bitwise_and(stream.array, stream.array, mask=mask2)
             
-            #cv2.imshow("frame",stream.array)
+            cv2.imshow("frame",stream.array)
             #cv2.imshow("mask",mask)
             
             
