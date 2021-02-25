@@ -119,8 +119,8 @@ with picamera.PiCamera() as camera:
                 max_cnt2=max(contours2,key=lambda x:cv2.contourArea(x))
                 x2,y2,w2,h2=cv2.boundingRect(max_cnt2)
                 
-            cv2.imshow("res1",mask1)
-            cv2.imshow("res2",mask2)
+            cv2.imshow("mask1",mask1)
+            cv2.imshow("mask2",mask2)
                 
             # 表裏判定：裏のとき
             if(x1 > x2):
