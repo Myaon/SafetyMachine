@@ -11,6 +11,28 @@ import subprocess
 
 import time
 import csv
+
+#from ConfigParser import ConfigParser
+import configparser
+
+config = configparser.ConfigParser()
+config.read('config.ini')
+
+# 設定ファイルから読んだ文字列を数値配列に変換
+mask_color1 = config.get('masking','color1').strip("[").strip("]").split()
+mask_color1 = [int(s) for s in mask_color1]
+mask_color2 = config.get('masking','color2').strip("[").strip("]").split()
+mask_color2 = [int(r) for r in mask_color2]
+
+# ±nで閾値決定
+n=20
+mask_color1_max = map(lambda x: x+n, mask_color1)
+mask_color1_min = map(lambda x: x-n, mask_color1)
+mask_color2_max = map(lambda x: x+n, mask_color2)
+mask_color2_min = map(lambda x: x-n, mask_color2)
+print(mask_color1_max)
+print(mask_color1_min)
+
 def toCSV(state):
 	with open('time.csv', 'a') as f:
 		writer = csv.writer(f)
@@ -37,9 +59,9 @@ with picamera.PiCamera() as camera:
         cv2.namedWindow("frame")
         
         # 可変（H,S,V,W）
-        cv2.createTrackbar("H1","frame",4,180,nothing)
-        cv2.createTrackbar("H2","frame",90,180,nothing)
-        W = 6
+        #cv2.createTrackbar("H1","frame",4,180,nothing)
+        #cv2.createTrackbar("H2","frame",90,180,nothing)
+        #W = 6
 
         while True:
             s1=time.time()#現在の時刻を取得s1に代入
@@ -64,7 +86,7 @@ with picamera.PiCamera() as camera:
             upper1 = np.array([10,255,255])
             lower2 = np.array([90,0,0])
             upper2 = np.array([110,255,255])
-            '''
+            
             
             H1 = cv2.getTrackbarPos("H1","frame")
             H2 = cv2.getTrackbarPos("H2","frame")
@@ -73,6 +95,11 @@ with picamera.PiCamera() as camera:
             upper1 = np.array([H1+W,255,255])
             lower2 = np.array([H2,0,0])
             upper2 = np.array([H2+W,255,255])
+            '''
+            lower1 = np.array(mask_color1_min)
+            upper1 = np.array(mask_color1_max)
+            lower2 = np.array(mask_color2_min)
+            upper2 = np.array(mask_color2_max)
             
             #マスク処理
             mask1 = cv2.inRange(hsv, lower1, upper1)

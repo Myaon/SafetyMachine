@@ -49,10 +49,10 @@ with picamera.PiCamera() as camera:
             upper2 = np.array([70,150,200])
             '''
             # ビニールテープ（赤,青）
-            lower1 = np.array([4,0,0])
-            upper1 = np.array([10,255,255])
-            lower2 = np.array([90,0,0])
-            upper2 = np.array([110,255,255])
+            lower1 = np.array([0,0,30])
+            upper1 = np.array([10,255,200])
+            lower2 = np.array([100,0,30])
+            upper2 = np.array([110,255,200])
             
             #マスク処理
             mask1 = cv2.inRange(hsv, lower1, upper1)
