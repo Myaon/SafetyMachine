@@ -12,12 +12,13 @@
 
 ## セットアップ手順
 Raspberry Piを起動しこのリポジトリをクローン
-
+```
+git clone https://github.com/Myaon/SafetyMachine.git
+```
 setup.shを実行
-
-IDを書き換え
-
-自動起動を設定
+```
+bash ./setup.sh
+```
 
 ## CAD
 Fusion360を用いて設計した装置のケースのCADデータが入っています。  
