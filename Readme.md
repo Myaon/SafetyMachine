@@ -10,19 +10,13 @@
 - Raspberry Pi 3B
 - Raspbian OS
 
-## セットアップ手順
-Raspberry Piを起動しこのリポジトリをクローン
-```
-git clone https://github.com/Myaon/SafetyMachine.git
-```
-setup.shを実行
-```
-bash ./setup.sh
-```
+## 解説資料
+https://docs.google.com/presentation/d/1wn3XUVRSCCsMOj9bJDgt8lTUBzstiMSykOhqORb3o1Q/edit?usp=sharing
 
 ## CAD
-Fusion360を用いて設計した装置のケースのCADデータが入っています。  
+Fusion360を用いて設計した装置のケースと専用カメラ治具のCADデータが入っています。  
 3Dプリンターもしくはレーザー加工機で作れるような形状になっています。
 
-## 回路
-![IMG20210417144218](https://user-images.githubusercontent.com/41198895/115658147-260ec200-a373-11eb-9d8a-459aab69c589.jpg)
+## 回路及び外観
+![14178](https://user-images.githubusercontent.com/41198895/116036929-5bcce700-a6a2-11eb-942a-9b1b4a453b2f.jpg)
+![14179](https://user-images.githubusercontent.com/41198895/116036965-6a1b0300-a6a2-11eb-81db-51e4d3d14671.jpg)
