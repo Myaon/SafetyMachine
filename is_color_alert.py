@@ -32,7 +32,7 @@ try:
   # mixer moduleの初期化
   pygame.mixer.init()
   # 再生音源の設定
-  pygame.mixer.music.load("alert.mp3")
+  pygame.mixer.music.load("/home/pi/SafetyMachine/alert.mp3")
   #play_sound = pygame.mixer.Sound("open_jtalk.wav")
   
   while True:
@@ -130,3 +130,12 @@ try:
 except KeyboardInterrupt:
   led.setRGB(0,0,0)
   GPIO.cleanup()
+
+except Exception as e:
+  import logging
+  logging.basicConfig(filename="test.log",level=logging.DEBUG)
+  logging.error(e)
+  led.setRGB(0,1,0)
+  
+else:
+  led.setRGB(1,0,0)
