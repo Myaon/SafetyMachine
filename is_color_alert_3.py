@@ -3,11 +3,16 @@ import cv2
 import numpy as np
 import led
 import RPi.GPIO as GPIO
-import urllib2
+import urllib
 import requests
 import pygame.mixer
 import time
 import subprocess
+
+from slacker import Slacker
+token = "xoxb-318247348516-2061565468485-M5c3G0me5DxGcRaf5gjiKSoE"
+slacker = Slacker(token)
+channel_name = "#" + "cat_bot"
 
 # IFTTT設定
 ifttt_url = 'https://maker.ifttt.com/trigger/raspberry/with/key/gHPH_xDKR664IVIr2YtRRj6BbQoQi-K0mCowIJCGPF3'
@@ -15,9 +20,9 @@ ifttt_url = 'https://maker.ifttt.com/trigger/raspberry/with/key/gHPH_xDKR664IVIr
 # ネット接続状況確認関数
 def internet_on():
 	try:
-		urllib2.urlopen('http://216.58.192.142', timeout=1)
+		urllib.request('http://216.58.192.142', timeout=1)
 		return True
-	except urllib2.URLError as err:
+	except urllib.error as err:
 		return False
 
 # 物理スイッチ設定
@@ -82,8 +87,10 @@ try:
         led.setRGB(1,0,0)
         
         cv2.imwrite("frame.png", frame)
-        cv2.imwrite("mask.png", mask)
         cv2.imwrite("res.png", res)
+        
+        result = slacker.files.upload("/home/pi/SafetyMachine/frame.png", channels=channel_name)
+        result = slacker.files.upload("/home/pi/SafetyMachine/res.png", channels=channel_name)
         
         # 非常停止の有無
         if GPIO.input(18) == GPIO.LOW:
