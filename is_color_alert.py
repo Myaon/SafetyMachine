@@ -81,9 +81,10 @@ try:
         print(cv2.contourArea(contour))
         led.setRGB(1,0,0)
         
-        cv2.imwrite("frame.png", frame)
-        cv2.imwrite("mask.png", mask)
-        cv2.imwrite("res.png", res)
+        # ひとつ上の階層に画像を保存
+        cv2.imwrite("../frame.png", frame)
+        cv2.imwrite("../mask.png", mask)
+        cv2.imwrite("../res.png", res)
         
         # 非常停止の有無
         if GPIO.input(18) == GPIO.LOW:
