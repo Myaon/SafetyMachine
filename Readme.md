@@ -10,6 +10,35 @@
 - Raspberry Pi 3B
 - Raspbian OS
 
+## セットアップ手順
+Raspberry Piを起動しこのリポジトリをクローン
+```
+git clone https://github.com/Myaon/SafetyMachine.git
+cd SafetyMachine
+```
+setup.shを実行
+```
+bash ./setup.sh
+```
+MACアドレスを書き換え
+```
+sudo nano is_color_alert.py
+```
+86行目のMACアドレスの部分を手持ちのSwitchBotの値に書き換え
+```
+subprocess.call(['python', '/home/pi/python-host/switchbot.py', 'SwitchBotのMacアドレス', 'Press'])
+```
+
+自動起動を設定
+```
+sudo nano /etc/rc.local
+```
+ファイルの最後にexit 0とあるので、その手前に起動時に実行したい以下のコマンドを追記。
+```
+pigpiod
+python /home/pi/SafetyMachine/is_color_alert.py
+```
+
 ## 解説資料
 https://docs.google.com/presentation/d/1wn3XUVRSCCsMOj9bJDgt8lTUBzstiMSykOhqORb3o1Q/edit?usp=sharing
 
