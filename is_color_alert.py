@@ -10,11 +10,12 @@ import time
 import subprocess
 
 # IFTTT設定
-ifttt_url = 'https://maker.ifttt.com/trigger/raspberry/with/key/gHPH_xDKR664IVIr2YtRRj6BbQoQi-K0mCowIJCGPF3'
+ifttt_url = 'https://maker.ifttt.com/trigger/SmartPlug/with/key/gHPH_xDKR664IVIr2YtRRj6BbQoQi-K0mCowIJCGPF3'
 
 # ネット接続状況確認関数
 def internet_on():
 	try:
+		print("test")
 		urllib2.urlopen('http://216.58.192.142', timeout=1)
 		return True
 	except urllib2.URLError as err:
@@ -58,7 +59,7 @@ try:
 
     # 取り出す色を指定
     lower_red = np.array([0,150,50])
-    upper_red = np.array([5,255,255])
+    upper_red = np.array([15,255,255])
 
     #マスク処理
     mask1 = cv2.inRange(hsv, lower_green, upper_green)

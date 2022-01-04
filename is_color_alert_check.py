@@ -8,18 +8,6 @@ import requests
 import pygame.mixer
 import time
 import subprocess
-import servo
-
-# IFTTT設定
-ifttt_url = 'https://maker.ifttt.com/trigger/raspberry/with/key/gHPH_xDKR664IVIr2YtRRj6BbQoQi-K0mCowIJCGPF3'
-
-# ネット接続状況確認関数
-def internet_on():
-	try:
-		urllib2.urlopen('http://216.58.192.142', timeout=1)
-		return True
-	except urllib2.URLError as err:
-		return False
 
 # 物理スイッチ設定
 GPIO.setmode(GPIO.BCM)
@@ -58,15 +46,15 @@ try:
     upper_green = np.array([180,255,255])
 
     # 取り出す色を指定
-    lower_red = np.array([0,150,50])
-    upper_red = np.array([15,255,255])
+    lower_red = np.array([0,150,150])
+    upper_red = np.array([20,255,255])
 
     #マスク処理
-    mask1 = cv2.inRange(hsv, lower_green, upper_green)
-    mask2 = cv2.inRange(hsv, lower_red, upper_red)
+    #mask1 = cv2.inRange(hsv, lower_green, upper_green)
+    #mask2 = cv2.inRange(hsv, lower_red, upper_red)
 
-    mask = mask1 + mask2
-    #mask = cv2.inRange(hsv, lower_red, upper_red)
+    #mask = mask1 + mask2
+    mask = cv2.inRange(hsv, lower_red, upper_red)
     
     res = cv2.bitwise_and(frame, frame, mask=mask)
 
@@ -82,38 +70,12 @@ try:
         print(cv2.contourArea(contour))
         led.setRGB(1,0,0)
         
-        # ひとつ上の階層に画像を保存
-        cv2.imwrite("../frame.png", frame)
-        cv2.imwrite("../mask.png", mask)
-        cv2.imwrite("../res.png", res)
         
-        # サーボモーターでの非常停止
-        servo.switchServo()
-        
-        # 非常停止の有無
-        if GPIO.input(18) == GPIO.LOW:
-          # SwitchBot OFF
-          #subprocess.call(['python', '/home/pi/python-host/switchbot.py', 'DE:CC:4C:97:1B:44', 'Press'])
-          None
-          
-          # ネット接続あり
-          if internet_on():
-            # 非常停止実行
-            requests.get(ifttt_url)
-            
-        # アラートの有無
-        if GPIO.input(25) == GPIO.LOW:
-          pygame.mixer.music.play(1)
-          #play_sound.play()
-          time.sleep(3)
-          pygame.mixer.music.stop()
-          #play_sound.stop()
-        break
         
     # ウィンドウに出力
     cv2.imshow("frame",frame)
-    cv2.imshow("mask",mask)
-    #cv2.imshow("res",res)
+    #cv2.imshow("mask",mask)
+    cv2.imshow("res",res)
     
     # キー入力割り込み処理
     key = cv2.waitKey(1)
@@ -128,6 +90,10 @@ try:
   
 except KeyboardInterrupt:
   led.setRGB(0,0,0)
+  # ひとつ上の階層に画像を保存
+  cv2.imwrite("../frame3.png", frame)
+  cv2.imwrite("../mask3.png", mask)
+  cv2.imwrite("../res3.png", res)
   GPIO.cleanup()
 
 except Exception as e:
